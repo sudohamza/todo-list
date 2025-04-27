@@ -20,8 +20,8 @@ const AddTodoForm = () => {
       setError("Title is required");
       return false;
     }
-    if (title.length < 6) {
-      setError("Name must be at least 6 characters");
+    if (title.length < 4) {
+      setError("Title must be at least 4 characters");
       return false;
     }
     return true;
@@ -36,6 +36,7 @@ const AddTodoForm = () => {
         body: { title, done: false, description },
       });
       setTitle("");
+      setDescription("");
       refreshHome();
     }
   };
@@ -57,7 +58,7 @@ const AddTodoForm = () => {
           placeholder="Add a new todo"
           className="border border-gray-300 rounded px-4 py-2 my-2 w-full"
         />
-        {error && <p className="text-center text-red-500">{error}</p>}
+        {error && <p className="-mt-2 ml-1 text-red-500">{error}</p>}
 
         <textarea
           name="description"
@@ -66,7 +67,7 @@ const AddTodoForm = () => {
             setDescription(e.target.value);
             setError("");
           }}
-          placeholder="Description"
+          placeholder="Description is optional."
           className="border border-gray-300 rounded px-4 py-2 my-2 w-full"
         />
         <div className="flex justify-center">

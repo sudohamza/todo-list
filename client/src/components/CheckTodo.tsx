@@ -21,7 +21,7 @@ const CheckTodo: React.FC<{ _id: string; done: boolean }> = ({ _id, done }) => {
       id="rememberMe"
       onChange={handleChange}
       checked={done}
-      className="cursor-pointer h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+      className="cursor-pointer text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
     />
   );
 };

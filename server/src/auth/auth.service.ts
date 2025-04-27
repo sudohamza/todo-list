@@ -19,7 +19,6 @@ export class AuthService {
   ) {}
 
   async register(body: RegisterUserDto, response: Response) {
-    console.log(body);
     try {
       const user = await this.userRepo.findOne({
         where: { email: body.email },
