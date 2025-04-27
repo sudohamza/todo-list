@@ -51,3 +51,14 @@ npm run start
 ## Notes
 
 Ensure you have Node.js installed on your system before proceeding.
+Don't forget to provide env variable for seeding admin user and other stuff like Database and Jwt
+
+### Environment Variables
+
+The `server` directory includes a sample `.sample.env` file to help you understand the required environment variables. Before running the server, create a `.private.env` file in the `server` directory and populate it with the necessary values. These variables typically include:
+
+- **Database Configuration**: Connection string or credentials for your database.
+- **JWT Secret**: A secret key for signing JSON Web Tokens.
+- **Admin Credentials**: Default admin email and password for seeding.
+
+Refer to the `.sample.env` file for guidance on the format and required fields.
