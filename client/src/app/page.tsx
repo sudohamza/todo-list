@@ -2,7 +2,7 @@ import AddTodoForm from "@/components/AddTodoForm";
 import CheckTodo from "@/components/CheckTodo";
 import DropdownMenu from "@/components/DropdownMenu";
 import RemoveTodo from "@/components/RemoveTodo";
-import { BASE_URL } from "@/utils/constants";
+import {  INTERNAL_URL } from "@/utils/constants";
 import fetchRequest from "@/utils/fetch-request";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -25,7 +25,7 @@ export default async function Home() {
   const token = (await cookies()).get("token")?.value;
 
   const profile = await fetchRequest<undefined, UserProfile>({
-    url: `${BASE_URL}user/profile`,
+    url: `${INTERNAL_URL}user/profile`,
     method: "GET",
     token,
   }).catch(() => {
@@ -33,7 +33,7 @@ export default async function Home() {
   });
 
   const todos = await fetchRequest<undefined, Array<Todo>>({
-    url: `${BASE_URL}todo`,
+    url: `${INTERNAL_URL}todo`,
     method: "GET",
     token,
   }).catch(() => {
