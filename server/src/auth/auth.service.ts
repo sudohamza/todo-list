@@ -32,7 +32,7 @@ export class AuthService {
       newUser.password_hash = hashSync(body.password, 10);
       const savedUser = await this.userRepo.save(newUser);
       const token = await this.createJwtToken(savedUser);
-      response    .send({ success: token});
+      response.send({ success: token});
     } catch (error) {
       handleExceptions(error, 'Something went wrong while registering user.');
     }
@@ -48,13 +48,7 @@ export class AuthService {
       if (!password)
         throw new BadRequestException('Invalid email or password.');
       const token = await this.createJwtToken(user);
-      response
-        .cookie('token', token, {
-          maxAge: body.remember ? this.config.get('COOKIE_AGE') : undefined,
-          httpOnly: true,
-          secure: true,
-        })
-        .send({ success: true });
+      response.send({ success: token});
     } catch (error) {
       handleExceptions(error, 'Something went wrong while login.');
     }

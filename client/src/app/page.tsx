@@ -2,7 +2,7 @@ import AddTodoForm from "@/components/AddTodoForm";
 import CheckTodo from "@/components/CheckTodo";
 import DropdownMenu from "@/components/DropdownMenu";
 import RemoveTodo from "@/components/RemoveTodo";
-import {  INTERNAL_URL } from "@/utils/constants";
+import {  BASE_URL } from "@/utils/constants";
 import fetchRequest from "@/utils/fetch-request";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -14,7 +14,7 @@ export type UserProfile = {
   admin: boolean;
 };
 
-type Todo = {
+export type Todo = {
   _id: string;
   title: string;
   done: boolean;
@@ -23,22 +23,22 @@ type Todo = {
 
 export default async function Home() {
   const token = (await cookies()).get("token")?.value;
-
-  const profile = await fetchRequest<undefined, UserProfile>({
-    url: `${INTERNAL_URL}user/profile`,
-    method: "GET",
-    token,
+  const profile = await fetchRequest<{token:string |undefined}, UserProfile>({
+    url: `${BASE_URL}api/profile`,
+    method: "POST",
+    body:{token}
   }).catch(() => {
     redirect("/login");
   });
 
-  const todos = await fetchRequest<undefined, Array<Todo>>({
-    url: `${INTERNAL_URL}todo`,
-    method: "GET",
-    token,
-  }).catch(() => {
-    redirect("/login");
-  });
+  // const todos = await fetchRequest<undefined, Array<Todo>>({
+  //   url: `${INTERNAL_URL}todo`,
+  //   method: "GET",
+  // }).catch(() => {
+  //   redirect("/login");
+  // });
+
+  const todos = [{_id:'d',done:false,title:"dfs",description:""}]
 
   return (
     <div>

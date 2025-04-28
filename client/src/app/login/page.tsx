@@ -2,9 +2,8 @@
 import fetchRequest from "@/utils/fetch-request";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { BASE_URL } from "@/utils/constants";
 
-type LoginFormDat = {
+export type LoginFormData = {
   email: string;
   password: string;
   remember: boolean;
@@ -16,20 +15,35 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+  }>({});
+
+  const validate = () => {
+    const newErrors: typeof errors = {};
+    if (!email) newErrors.email = "Email is required";
+    if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "Email is invalid";
+    if (!password) newErrors.password = "Password is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchRequest<LoginFormDat, undefined>({
-      url: `${BASE_URL}auth/login`,
-      body: { email, password, remember },
-      method: "POST",
-    })
-      .then(() => {
-        router.push("/");
+    if (validate()) {
+      fetchRequest<LoginFormData, undefined>({
+        url: `api/login`,
+        body: { email, password, remember },
+        method: "POST",
       })
-      .catch((err) => {
-        setError(err.message);
-      });
+        .then(() => {
+          router.push("/");
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    }
   };
 
   return (
@@ -50,12 +64,18 @@ export default function Login() {
           <input
             type="email"
             id="email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              setErrors({ ...errors, password: "" })
+            }}
             value={email}
             required={true}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter your email"
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+          )}
         </div>
         <div className="mb-4">
           <label
@@ -69,9 +89,15 @@ export default function Login() {
             id="password"
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter your password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value)
+              setErrors({ ...errors, password: "" })
+            }}
             value={password}
           />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+          )}
         </div>
         <div className="flex justify-around mb-2">
           {Boolean(error) && (
