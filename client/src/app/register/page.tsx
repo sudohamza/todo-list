@@ -1,11 +1,10 @@
 "use client";
 
-import { BASE_URL } from "@/utils/constants";
 import fetchRequest from "@/utils/fetch-request";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type RegisterFormDat = {
+export type RegisterFormData = {
   name: string;
   email: string;
   password: string;
@@ -18,6 +17,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [error, setError] = useState("");
   const [errors, setErrors] = useState<{
     name?: string;
     email?: string;
@@ -45,12 +45,14 @@ export default function Register() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      fetchRequest<RegisterFormDat, undefined>({
-        url: `${BASE_URL}auth/register`,
+      fetchRequest<RegisterFormData, undefined>({
+        url: `api/register`,
         body: { email, name, password, remember },
         method: "POST",
       }).then(() => {
         router.push("/");
+      }).catch((err) =>{
+        setError(err.message);
       });
     }
   };
@@ -127,6 +129,13 @@ export default function Register() {
           />
           {errors.password && (
             <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+          )}
+        </div>
+        <div className="flex justify-around mb-2">
+          {Boolean(error) && (
+            <span className="w-full items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
+              {error}
+            </span>
           )}
         </div>
         <div className="mb-4 flex items-center">
