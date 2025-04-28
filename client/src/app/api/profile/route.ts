@@ -1,5 +1,5 @@
 import { UserProfile } from "@/app/page";
-import { INTERNAL_URL } from "@/utils/constants";
+import { EXTERNAL_URL} from "@/utils/constants";
 import fetchRequest from "@/utils/fetch-request";
 import { NextResponse } from "next/server";
 
@@ -9,7 +9,7 @@ export async function POST(request:Request) {
     const body = await request.json();
    const {token} = body;
     const responseJson = await fetchRequest<undefined,UserProfile>({
-      url: `${INTERNAL_URL}user/profile`,
+      url: `${EXTERNAL_URL}user/profile`,
       method: "GET",
       token
     });

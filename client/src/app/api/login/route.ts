@@ -1,5 +1,5 @@
 import { LoginFormData } from "@/app/login/page";
-import { INTERNAL_URL } from "@/utils/constants";
+import { EXTERNAL_URL } from "@/utils/constants";
 import fetchRequest from "@/utils/fetch-request";
 import { NextResponse } from "next/server";
 
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         } | ErrorResponse;
 
         const responseJson = await fetchRequest<LoginFormData, RegisterResponse>({
-            url: `${INTERNAL_URL}auth/login`,
+            url: `${EXTERNAL_URL}auth/login`,
             method: "POST",
             body,
         });
