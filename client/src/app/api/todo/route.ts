@@ -1,4 +1,4 @@
-import { Todo, UserProfile } from "@/app/page";
+import { Todo} from "@/app/page";
 import { INTERNAL_URL } from "@/utils/constants";
 import fetchRequest from "@/utils/fetch-request";
 import { NextResponse } from "next/server";
