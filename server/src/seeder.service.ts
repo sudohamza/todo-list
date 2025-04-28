@@ -24,17 +24,20 @@ export class SeederService {
         );
       if (!adminName)
         throw new InternalServerErrorException(
-          'Must provide admin email in env',
+          'Must provide admin name in env',
         );
       if (!adminPassword)
         throw new InternalServerErrorException(
-          'Must provide admin email in env',
+          'Must provide admin password in env',
         );
-
       const adminExist = await this.userRepo.findOneBy({
         admin: true,
       });
-      if (adminExist) return;
+      if (adminExist){
+        console.log("Already have admin user.")
+        console.log(adminExist);
+        return;
+      };
       const user = new User();
       user.name = adminName;
       user.email = adminEmail;
